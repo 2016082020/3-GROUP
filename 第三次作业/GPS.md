@@ -131,4 +131,44 @@
     finall<-merge(GPA,dsum,by.x = 'id',by.y = 'id',all.x = TRUE)
     write.csv(finall,'G:/finall.csv',row.names=FALSE)#输出到文件，便于存储
     
- #### 5.5
+ #### 5.5通过学生的GPA与轨迹特征值，分析特征与GPA的相关性
+    #计算Sx（GPA标准差）
+    newd<-data[2]
+    sum<-0
+    for(i in 1:nrow(newd)){
+      sum = sum + newd[i,1]
+    }
+   
+    x1=sum/nrow(data[1]) #GPA均值
+
+    x2=0
+    for(i in 1:nrow(newd)){
+      x2= x2+(newd[i,1]-x1)*(newd[i,1]-x1)
+    }
+    Sx=sqrt(x2/(nrow(data[1])-1)) #GPA标准差
+    
+    #计算Sy（轨迹特征值标准差）
+    newd1<-data[3]
+    sum1<-0
+    for(i in 1:nrow(newd1)){
+      sum1 = sum1 + newd1[i,1]
+    }
+    
+    y1=sum1/nrow(data[1]) #轨迹特征值均值
+
+    y2=0
+    for(i in 1:nrow(newd1)){
+      y2= y2+(newd1[i,1]-y1)*(newd1[i,1]-y1)
+    }
+    Sy=sqrt(y2/(nrow(data[1])-1)) #轨迹特征值标准差
+    
+    #计算Sxy（样本协方差）
+    xy <- 0
+    for(i in 1:nrow(data)){
+      xy = xy + (data[i,2] - x1) * (data[i,3] - y1)
+    }
+    Sxy = xy/(nrow(data[1])-1)#样本协方差
+
+    #计算Rxy（样本相关系数）
+    rxy = Sxy/(Sx*Sy)
+    print(rxy)
