@@ -15,3 +15,36 @@
 ## 4. 数据分析
 #### 4.1 下面是对学生的数据经行分析从中对图书馆学习数据数据进行提取，通过对其成绩GPA和平均每天学习时间进行绘图得到的显示结果
 ![](https://github.com/cuit201608/3-GROUP/blob/master/%E5%9B%BE/4%E6%9C%8811%E6%97%A5%E4%BD%8D%E7%BD%AE.JPG)
+## 5.关键代码：
+#### << 5.1 导入相关的程序包并且读入学生数据
+    library(plotrix)
+    
+    info=48 #48个学生数据，存储数据框totalGPS
+    p <- c(paste0('totalGPS ',1:info))
+    loc=1
+    for(i in 1:59){#59代表第48个学生的csv文件后缀名为59
+      a='G:/gps/gps_u'
+      c='.csv'
+      b=i
+      if(i<10){
+        b=paste('0',i,sep = '')
+      }
+      name=paste(a,b,c,sep ='')
+      if(file.exists(name)){#name是通过for循环创建的文件路径，循环创建48个存储学生数据的dataframe
+        assign(p[loc],read.csv(name,header = TRUE,sep=','))
+      }
+      else{
+        next()
+      }
+      loc=loc+1
+    }
+    #mg数据框是存储从学生的原始数据中筛选时间、GPS经纬度坐标数据
+    mg <- c(paste0('mg',1:info))
+    td <- c(paste0('td',1:info))
+    t<-c(paste0('t',1:info))
+    for(i in 1:length(p)){
+      for(j in get(p[i])[1]){
+        assign(t[i],as.POSIXct(j, origin="1970-01-01 00:00:00"))
+      }
+      assign(mg[i],cbind.data.frame(t=get(t[i]),get(p[i])[5],get(p[i])[6]))#将从原始数据筛选出来的数据进行合并
+    }
