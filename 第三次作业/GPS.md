@@ -48,3 +48,87 @@
       }
       assign(mg[i],cbind.data.frame(t=get(t[i]),get(p[i])[5],get(p[i])[6]))#将从原始数据筛选出来的数据进行合并
     }
+    
+    
+    
+ #### 5.2 筛选从早上7点--23点的数据并且在对每一个学生的数据进行操作过后打上学生标签
+ 
+    zt<-c()#时间
+    zla<-c()#纬度
+    zlo<-c()#经度
+    zuer<-c()#学生的身份名
+    zcount=1
+    for (i in 1:info) {#外层循环控制48个学生数据
+      for(j in 1:nrow(get(mg[i])[1])){#内层循环控制每个学生数据
+        #if(weekdays(as.Date(get(mg[i])[j,1]))=='星期日'||weekdays(as.Date(get(mg[i])[j,1]))=='星期六'){
+          if((type.convert(strftime(get(mg[i])[j,1],format = "%H"))>=7&&type.convert(strftime(get(mg[i])[j,1],format = "%H"))<=23)){
+            zt[zcount]=get(mg[i])[j,1]#选取时间
+            zla[zcount]=get(mg[i])[j,2]#选取维度
+            zlo[zcount]=get(mg[i])[j,3]#选取经度
+            if(i<10){
+              zuer[zcount]=paste('uer0',i,sep = '')
+            }
+            else{
+              zuer[zcount]=paste('uer',i,sep = '')
+              }
+            zcount=zcount+1
+          }else{next()}
+      }
+    }
+    for(i in as.data.frame(zt)){
+      zt1=as.POSIXct(i, origin="1970-01-01 00:00:00")
+    }
+    zdata1<-cbind.data.frame(zt1,zt,zla,zlo,zuer)#学生数据2-23点
+    mfre<-as.data.frame(table(zdata1['zuer']))#统计每个学生的数据出现频率table函数
+ #### 5.3 关键核心代码：
+    #经纬度的最大值是通过谷歌地图进行查找图书馆的位置进行确定的
+    mala=43.70597#最大维度
+    mila=43.70462#最小维度
+    malo=-72.28816#最大jin度
+    milo=-72.28950#最小jin度
+    
+    #算法分析：
+    sumtime=c(1:info)
+    stime=0
+    for(i in 1:nrow(mfre[1])){#控制每个学生的数据搜索，方便后续时间存储，循环48次
+      for(j in 1:nrow(zdata1[1])){#控制zdata1数据的新循环搜索总次数约15万次
+        if(zdata1[j,5]==mfre[i,1]){
+          if(zdata1[j,3]>=mila&&zdata1[j,3]<=mala&&zdata1[j,4]>=milo&&zdata1[j,4]<=malo){#判断学生位置点是否在图书馆范围内
+            if(length(zdata1[j-1,1])==1&&length(zdata1[j+1,1])==1){#如果在，并且当前位置和下一位置数据存在
+              if(zdata1[j+1,2]-zdata1[j,2]>480&&zdata1[j+1,2]-zdata1[j,2]<720||zdata1[j+1,2]-zdata1[j,2]>1080&&zdata1[j+1,2]-zdata1[j,2]<1320){#取后者的时间-前者时间是否在10-20分钟的范围内，为了减小误差把差值范围增大
+                stime=zdata1[j+1,2]-zdata1[j,2]
+              }
+              else{
+                stime=1200#如果不满足条件就附一个固定的时间
+              }
+              # if(zdata1[j+1,2]-zdata1[j,2]>1080&&zdata1[j+1,2]-zdata1[j,2]<1260){
+              #   stime=zdata1[j+1,2]-zdata1[j,2]
+              # }
+            }
+            else{stime=1200}
+            sumtime[i]=sumtime[i]+stime#将单个学生的时间进行单独的累加和
+            stime=0
+          }
+          else{next()}
+        }
+        else{next()}
+      }
+    }
+    
+    
+ #### 5.4 对得出的数据进行处理合并
+    uid<-read.csv('G:/id.csv',header = TRUE,sep=',')#读取id编号数据
+    GPA<-read.csv('G:/GPA.csv',header = TRUE,sep=',')#读取成绩数据
+
+    st=c()
+    strnum=1
+    for(i in 1:length(sumtime)){#对累加的时间进行缩小到每一天
+      st[strnum]=round(sumtime[i]/216000,3)
+      strnum=strnum+1
+    }
+
+    dsum<-cbind.data.frame(st,uid)
+    finall<-merge(GPA,dsum,by.x = 'id',by.y = 'id',all.x = TRUE)
+    write.csv(finall,'G:/finall.csv',row.names=FALSE)#输出到文件，便于存储
+    
+ #### 5.5
