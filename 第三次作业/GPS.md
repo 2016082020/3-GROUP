@@ -12,6 +12,7 @@
 ![](https://github.com/cuit201608/3-GROUP/blob/master/%E7%AC%AC%E4%B8%89%E6%AC%A1%E4%BD%9C%E4%B8%9A/%E7%85%A7%E7%89%87/%E5%AD%A6%E7%94%9F%E6%95%B0%E6%8D%AE.JPG)
 ## 3. 分析框架
 #### 3.1 把学生的GPS数据筛选出从早上7点-晚上12点的时间数据和GPS数据经纬度进行提取，从中可以提取在图书馆和校外所处时间，预测在图书馆呆的时间越长成绩3### 可能会好一点，通过对时间统计分析其相关性，得出相关系数
+![](https://github.com/cuit201608/3-GROUP/blob/master/%E7%AC%AC%E4%B8%89%E6%AC%A1%E4%BD%9C%E4%B8%9A/%E7%85%A7%E7%89%87/%E6%A8%A1%E5%9E%8B.JPG)
 ## 4. 数据分析
 #### 4.1 下面是对学生的数据经行分析从中对图书馆学习数据数据进行提取，通过对其成绩GPA和平均每天学习时间进行绘图得到的显示结果(在绘图之前将GPA由低到高进行排序)
 ![](https://github.com/cuit201608/3-GROUP/blob/master/%E7%AC%AC%E4%B8%89%E6%AC%A1%E4%BD%9C%E4%B8%9A/%E7%85%A7%E7%89%87/%E5%8F%8Cy.JPG)
