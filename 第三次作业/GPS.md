@@ -15,8 +15,12 @@
 ## 4. 数据分析
 #### 4.1 下面是对学生的数据经行分析从中对图书馆学习数据数据进行提取，通过对其成绩GPA和平均每天学习时间进行绘图得到的显示结果(在绘图之前将GPA由低到高进行排序)
 ![](https://github.com/cuit201608/3-GROUP/blob/master/%E7%AC%AC%E4%B8%89%E6%AC%A1%E4%BD%9C%E4%B8%9A/%E7%85%A7%E7%89%87/%E5%8F%8Cy.JPG)
-#### 4.2 进入图书馆相关度结果
+##### 4.1.1 进入图书馆相关度结果
 ![](https://github.com/cuit201608/3-GROUP/blob/master/%E7%AC%AC%E4%B8%89%E6%AC%A1%E4%BD%9C%E4%B8%9A/%E7%85%A7%E7%89%87/%E7%9B%B8%E5%85%B3%E5%BA%A6.JPG)
+#### 4.2 对学生从周一-周五的早上6:00-22:00的次数进行统计，得到该行为的特征值
+![](https://github.com/cuit201608/3-GROUP/blob/master/%E7%AC%AC%E4%B8%89%E6%AC%A1%E4%BD%9C%E4%B8%9A/%E7%85%A7%E7%89%87/%E6%A0%A1%E5%A4%96%E7%89%B9%E5%BE%81%E5%80%BC.JPG)
+##### 4.2.1 是学生的校外收集次数和成绩GPA的关系
+![](https://github.com/cuit201608/3-GROUP/blob/master/%E7%AC%AC%E4%B8%89%E6%AC%A1%E4%BD%9C%E4%B8%9A/%E7%85%A7%E7%89%87/%E6%A0%A1%E5%A4%96%E6%AC%A1%E6%95%B0%E5%9B%BE.JPG)
 ## 5.关键代码：
 #### << 5.1 导入相关的程序包并且读入学生数据
     library(plotrix)
@@ -174,6 +178,41 @@
     #计算Rxy（样本相关系数）
     rxy = Sxy/(Sx*Sy)
     print(rxy)
-## 6. 实验结论
+    
+## 6. 贝叶斯分类及预测
+#### 6.1 从特征值中构成训练集，数据组成如下
+![](https://github.com/cuit201608/3-GROUP/blob/master/%E7%AC%AC%E4%B8%89%E6%AC%A1%E4%BD%9C%E4%B8%9A/%E7%85%A7%E7%89%87/%E8%AE%AD%E7%BB%83%E9%9B%86%E6%A0%B7%E6%9C%AC.JPG)
+#### 6.2 构建训练集
+    #数据具有特殊格式
+    ccc<-read.csv('G:/1.csv',header = TRUE,sep=',')
+    bys<-naiveBayes(ccc[,1:3],ccc[,4])#第一参数：类别中的数据，第二参数：结果（GPA）
+    test<-data.frame(librarytime='short',librarycount='little',outshcoolcount='frequen')
+    predict(bys,test)
+
+#### 6.3 正确性检验(将每条数据记录在训练集中当做测试数据)
+    #result=c(1:30)
+    pre <- c(paste0('pre',1:30))#生成数据框
+      for(j in 1:nrow(ccc[1])){
+       assign(pre[j],data.frame(librarytime=ccc[j,1],librarycount=ccc[j,2],outshcoolcount=ccc[j,3]))
+
+      }
+      for (i in 1:30) {
+        result[i]=predict(bys,get(pre[i]))#输入的格式比较固定，第一个参数是数据框
+      }
+    contrast<-cbind.data.frame(specialldata1[1],ccc[4],result)
+    colnames(contrast)<-c('编号','原始','预测')
+#### 6.4 精确度计算（将预测结果与真实结果对比得到精准度）
+    #统计正确率
+    jishu=0
+    for(i in 1:nrow(contrast[1])){
+      if(contrast[i,2]==contrast[i,3]){
+        jishu=jishu+1
+      }else{next()}
+    }
+    successpredict=jishu/nrow(contrast[1])
+    print('精度检验预测成功率')
+    print(successpredict)
+ ![](https://github.com/cuit201608/3-GROUP/blob/master/%E7%AC%AC%E4%B8%89%E6%AC%A1%E4%BD%9C%E4%B8%9A/%E7%85%A7%E7%89%87/%E7%B2%BE%E5%87%86%E5%BA%A6.JPG)
+## 7. 实验结论
 #### 相关度说明：相关度越接近于1说明特征行为越会影响成绩，特征值越接近于0说明特征行为与成绩的好坏关系越低，甚至没有关系
 ####  比较特征值和成绩与图书馆学习时间图可以看出：成绩越差的确实与待在图书馆的时间有关，而成绩较好的其成绩与待在图书馆的时间关系不大
