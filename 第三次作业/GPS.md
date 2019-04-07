@@ -7,14 +7,14 @@
 #### 2.1 数据来源：美国达特茅斯学院48位学生从2013.3.27-2013.6.1的GPS轨迹数据
 #### 2.2 数据规模：将近20万条GPS位置数据
 #### 2.3 数据字段：如下
-![](https://github.com/cuit201608/3-GROUP/blob/master/%E5%9B%BE/4%E6%9C%8811%E6%97%A5%E4%BD%8D%E7%BD%AE.JPG)
+![](https://github.com/cuit201608/3-GROUP/blob/master/%E7%AC%AC%E4%B8%89%E6%AC%A1%E4%BD%9C%E4%B8%9A/%E7%85%A7%E7%89%87/%E6%95%B0%E6%8D%AE%E7%BB%84%E6%88%90.JPG)
 #### 2.4 数据组成：48位学生GPS数据部分截图
-![](https://github.com/cuit201608/3-GROUP/blob/master/%E5%9B%BE/4%E6%9C%8811%E6%97%A5%E4%BD%8D%E7%BD%AE.JPG)
+![](https://github.com/cuit201608/3-GROUP/blob/master/%E7%AC%AC%E4%B8%89%E6%AC%A1%E4%BD%9C%E4%B8%9A/%E7%85%A7%E7%89%87/%E5%AD%A6%E7%94%9F%E6%95%B0%E6%8D%AE.JPG)
 ## 3. 分析框架
 #### 3.1 把学生的GPS数据筛选出从早上7点-晚上12点的时间数据和GPS数据经纬度进行提取，从中可以提取在图书馆和校外所处时间，预测在图书馆呆的时间越长成绩3### 可能会好一点，通过对时间统计分析其相关性，得出相关系数
 ## 4. 数据分析
-#### 4.1 下面是对学生的数据经行分析从中对图书馆学习数据数据进行提取，通过对其成绩GPA和平均每天学习时间进行绘图得到的显示结果
-![](https://github.com/cuit201608/3-GROUP/blob/master/%E5%9B%BE/4%E6%9C%8811%E6%97%A5%E4%BD%8D%E7%BD%AE.JPG)
+#### 4.1 下面是对学生的数据经行分析从中对图书馆学习数据数据进行提取，通过对其成绩GPA和平均每天学习时间进行绘图得到的显示结果(在绘图之前将GPA由低到高进行排序)
+![](https://github.com/cuit201608/3-GROUP/blob/master/%E7%AC%AC%E4%B8%89%E6%AC%A1%E4%BD%9C%E4%B8%9A/%E7%85%A7%E7%89%87/%E5%8F%8Cy.JPG)
 ## 5.关键代码：
 #### << 5.1 导入相关的程序包并且读入学生数据
     library(plotrix)
